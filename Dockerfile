@@ -15,6 +15,8 @@ RUN curl https://get.acme.sh | sh
 ENV RAILS_ENV "production"
 WORKDIR /home/app/coderlane
 RUN mkdir -p /home/app
-ADD Gemfile Gemfile.lock package.json yarn.lock /home/app/coderlane
+ADD Gemfile Gemfile.lock package.json yarn.lock /home/app/coderlane/
+RUN gem install puma -v '~> 3.11'
+RUN bundle config set deployment 'true' && bundle install && yarn
 
 RUN bundle exec rails assets:precompile RAILS_PRECOMPILE=1 RAILS_ENV=production SECRET_KEY_BASE=fake_secure_for_compile
